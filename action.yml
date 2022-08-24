@@ -1,0 +1,27 @@
+name: "Git push for CI builds"
+description: "Push to git for CI builds"
+inputs:
+  files:
+    description: "list of files (separated with a space) that should be pushed. Default is all"
+    required: false
+    default: .
+  commit_message:
+    description: "The message for the commit, default is 'CI Build'. [skip ci] will be appended"
+    required: false
+    default: "CI build"
+  commit_user:
+    description: "The user for the commit which will be set in git config, default is 'CI Build'"
+    required: false
+    default: "CI build"
+  commit_email:
+    description: "The email for the commit which will be set in git config, default is 'cibuild@cibuild.com'"
+    required: false
+    default: "cibuild@cibuild.com"
+runs:
+  using: "docker"
+  image: "Dockerfile"
+  args:
+    - ${{ inputs.files}}
+    - ${{ inputs.commit_message}}
+    - ${{ inputs.commit_user}}
+    - ${{ inputs.commit_email}}
