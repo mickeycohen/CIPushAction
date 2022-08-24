@@ -1,4 +1,6 @@
 #!/bin/bash
+pwd
+ls -al
 echo "git status:"
 git status
 echo "Running git config"
