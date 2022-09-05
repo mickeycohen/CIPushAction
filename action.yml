@@ -18,10 +18,24 @@ inputs:
     required: false
     default: "cibuild@cibuild.com"
 runs:
-  using: "docker"
-  image: "Dockerfile"
-  args:
-    - ${{ inputs.files}}
-    - ${{ inputs.commit_message}}
-    - ${{ inputs.commit_user}}
-    - ${{ inputs.commit_email}}
+  using: "composite"
+  steps:
+    - run: |
+        pwd
+        ls -al
+        echo "git status:"
+        git status
+        echo "Running git config"
+        git config user.name "${{ inputs.commit_user }}"
+        git config user.email "${{ inputs.commit_email }}"
+        echo "Adding files"
+        git add ${{ inputs.files }}
+        echo "Commiting changes"
+        git commit -m "${{ inputs.commit_message }} [skip ci]"
+        echo "Rebase and push"
+        git pull --rebase
+        git push
+
+      shell: bash
+
+    
